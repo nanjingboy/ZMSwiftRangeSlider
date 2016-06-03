@@ -9,22 +9,14 @@ public class RangeSlider: UIControl {
 
     private var beginTrackLocation = CGPointZero
 
-    public var minValue = 0 {
-        didSet {
-            updateLayerFrames()
-        }
-    }
-
-    public var maxValue = 100 {
-        didSet {
-            updateLayerFrames()
-        }
-    }
+    public var minValue = 0
+    public var maxValue = 100
 
     public var values = Array(0...100) {
         didSet {
             minValue = values[0]
             maxValue = values[values.count - 1]
+            updateLayerFrames()
         }
     }
 
@@ -122,6 +114,7 @@ public class RangeSlider: UIControl {
                 maxValue = values[index]
             }
         }
+        updateLayerFrames()
 
         sendActionsForControlEvents(.ValueChanged)
 
