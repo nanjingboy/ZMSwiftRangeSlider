@@ -193,7 +193,12 @@ public class RangeSlider: UIControl {
                                             y: displayLayerOffsetY,
                                             width: thumbSize,
                                             height: displayTextFontSize)
-        minValueDisplayLayer.string = "\(minValue)"
+
+        if let minValueDisplayText = delegate?.rangeSliderMinValueDisplayText(minValue) {
+            minValueDisplayLayer.string = minValueDisplayText
+        } else {
+            minValueDisplayLayer.string = "\(minValue)"
+        }
         minValueDisplayLayer.setNeedsDisplay()
 
 
@@ -208,7 +213,12 @@ public class RangeSlider: UIControl {
                                             y: displayLayerOffsetY,
                                             width: thumbSize,
                                             height: displayTextFontSize)
-        maxValueDisplayLayer.string = "\(maxValue)"
+
+        if let maxValueDisplayText = delegate?.rangeSliderMaxValueDisplayText(maxValue) {
+            maxValueDisplayLayer.string = maxValueDisplayText
+        } else {
+            maxValueDisplayLayer.string = "\(maxValue)"
+        }
 
         maxValueDisplayLayer.setNeedsDisplay()
 
