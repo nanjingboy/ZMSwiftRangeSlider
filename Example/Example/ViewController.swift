@@ -9,8 +9,6 @@ class ViewController: UIViewController, RangeSliderDelegate {
         super.viewDidLoad()
 
         rangeSlider.delegate = self
-        rangeSlider.setRangeValues([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
-        rangeSlider.setMinAndMaxValue(2, maxValue: 8)
     }
 
     func onValueChanged(minValue: Int, maxValue: Int) {
@@ -18,4 +16,3 @@ class ViewController: UIViewController, RangeSliderDelegate {
         print("max value:\(maxValue)")
     }
 }
-
