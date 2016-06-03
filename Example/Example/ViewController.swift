@@ -1,13 +1,13 @@
 import UIKit
+import SwiftRangeSlider
 
 class ViewController: UIViewController {
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
+    @IBOutlet weak var rangeSlider: RangeSlider!
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
+    @IBAction func onRangeSliderValueChanged(sender: AnyObject) {
+        print("min value:\(rangeSlider.minValue)")
+        print("max value:\(rangeSlider.maxValue)")
     }
 }
 
