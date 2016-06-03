@@ -8,17 +8,12 @@ public class RangeSlider: UIControl {
     private let maxValueThumbLayer = ThumbLayer()
 
     private var beginTrackLocation = CGPointZero
+    private var rangeValues = Array(0...100)
 
-    public var minValue = 0
-    public var maxValue = 100
+    var minValue = 0
+    var maxValue = 100
 
-    public var values = Array(0...100) {
-        didSet {
-            minValue = values[0]
-            maxValue = values[values.count - 1]
-            updateLayerFrames()
-        }
-    }
+    public var delegate: RangeSliderDelegate?
 
     public override var frame: CGRect {
         didSet {
@@ -87,7 +82,7 @@ public class RangeSlider: UIControl {
 
     public override func continueTrackingWithTouch(touch: UITouch, withEvent event: UIEvent?) -> Bool {
         let location = touch.locationInView(self)
-        let count = values.count
+        let count = rangeValues.count
         var index = Int(location.x * CGFloat(count) / (bounds.width - thumbSize))
 
         if maxValue == minValue && location.x > beginTrackLocation.x && !maxValueThumbLayer.isHighlight {
@@ -102,21 +97,21 @@ public class RangeSlider: UIControl {
         }
 
         if minValueThumbLayer.isHighlight {
-            if index > values.indexOf(maxValue)! {
+            if index > rangeValues.indexOf(maxValue)! {
                 minValue = maxValue
             } else {
-                minValue = values[index]
+                minValue = rangeValues[index]
             }
         } else if maxValueThumbLayer.isHighlight {
-            if index < values.indexOf(minValue)! {
+            if index < rangeValues.indexOf(minValue)! {
                 maxValue = minValue
             } else {
-                maxValue = values[index]
+                maxValue = rangeValues[index]
             }
         }
         updateLayerFrames()
 
-        sendActionsForControlEvents(.ValueChanged)
+        delegate?.onValueChanged(minValue, maxValue: maxValue)
 
         return true
     }
@@ -124,6 +119,18 @@ public class RangeSlider: UIControl {
     public override func endTrackingWithTouch(touch: UITouch?, withEvent event: UIEvent?) {
         minValueThumbLayer.isHighlight = false
         maxValueThumbLayer.isHighlight = false
+    }
+
+    @nonobjc
+    public func setRangeValues(rangeValues: [Int]) {
+        self.rangeValues = rangeValues
+        setMinAndMaxValue(rangeValues[0], maxValue: rangeValues[rangeValues.count - 1])
+    }
+
+    public func setMinAndMaxValue(minValue: Int, maxValue: Int) {
+        self.minValue = minValue
+        self.maxValue = maxValue
+        updateLayerFrames()
     }
 
     func setupLayers() {
@@ -166,8 +173,8 @@ public class RangeSlider: UIControl {
     }
 
     func position(value: Int) -> CGFloat {
-        let index = values.indexOf(value)!
-        let count = values.count
+        let index = rangeValues.indexOf(value)!
+        let count = rangeValues.count
         if index == 0 {
             return thumbSize / 2.0
         } else if index == count - 1 {

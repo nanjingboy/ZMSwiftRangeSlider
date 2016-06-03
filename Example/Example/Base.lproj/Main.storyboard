@@ -24,9 +24,6 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="100" id="M3k-hh-qF8"/>
                                 </constraints>
-                                <connections>
-                                    <action selector="onRangeSliderValueChanged:" destination="BYZ-38-t0r" eventType="valueChanged" id="Bx3-Eg-uT1"/>
-                                </connections>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
