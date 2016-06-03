@@ -2,7 +2,6 @@ Pod::Spec.new do |s|
   s.name             = 'SwiftRangeSlider'
   s.version          = '0.1.0'
   s.summary          = 'A simple Range Slider library by Swift.'
-  s.description      = 'A simple Range Slider library by Swift.'
   s.homepage         = 'https://github.com/nanjingboy/SwiftRangeSlider'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = { 'Tom.Huang' => 'hzlhu.dargon@gmail.com' }
