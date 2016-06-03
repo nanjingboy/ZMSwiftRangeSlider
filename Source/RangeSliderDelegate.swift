@@ -2,5 +2,5 @@ import UIKit
 
 public protocol RangeSliderDelegate {
 
-    func onValueChanged(minValue: Int, maxValue: Int)
+    func rangeSliderValueChanged(minValue: Int, maxValue: Int)
 }

@@ -11,7 +11,7 @@ class ViewController: UIViewController, RangeSliderDelegate {
         rangeSlider.delegate = self
     }
 
-    func onValueChanged(minValue: Int, maxValue: Int) {
+    func rangeSliderValueChanged(minValue: Int, maxValue: Int) {
         print("min value:\(minValue)")
         print("max value:\(maxValue)")
     }

@@ -124,7 +124,7 @@ public class RangeSlider: UIControl {
         }
         updateLayerFrames()
 
-        delegate?.onValueChanged(minValue, maxValue: maxValue)
+        delegate?.rangeSliderValueChanged(minValue, maxValue: maxValue)
 
         return true
     }
