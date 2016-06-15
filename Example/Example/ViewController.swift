@@ -1,5 +1,5 @@
 import UIKit
-import SwiftRangeSlider
+import ZMSwiftRangeSlider
 
 class ViewController: UIViewController, RangeSliderDelegate {
 

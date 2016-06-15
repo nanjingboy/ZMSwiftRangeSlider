@@ -1,20 +1,20 @@
-# SwiftRangeSlider
+# ZMSwiftRangeSlider
 A simple Range Slider library by Swift.
 
 # Screenshot
 
-![SwiftRangeSlider Screenshot](Screenshot.gif)
+![ZMSwiftRangeSlider Screenshot](Screenshot.gif)
 
-# Install
+# Setup
 
-#### [CocoaPods](http://cocoapods.org/)
+#### Install with [CocoaPods](http://cocoapods.org/)
 
 ```ruby
 platform :ios, '8.0'
-pod 'SwiftRangeSlider', :git => 'https://github.com/nanjingboy/SwiftRangeSlider.git', :tag => '0.1.0'
+pod 'ZMSwiftRangeSlider', '~> 0.1.0'
 ```
 
-# [Example](Example/Example/ViewController.swift)
+#### [Example](Example/Example/ViewController.swift)
 
 # Configuration
 
