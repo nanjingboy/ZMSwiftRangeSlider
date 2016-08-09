@@ -11,7 +11,7 @@ A simple Range Slider library by Swift.
 
 ```ruby
 platform :ios, '8.0'
-pod 'ZMSwiftRangeSlider', '~> 0.1.0'
+pod 'ZMSwiftRangeSlider', '~> 0.1.3'
 ```
 
 #### [Example](Example/Example/ViewController.swift)

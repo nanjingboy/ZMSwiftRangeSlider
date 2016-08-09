@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
@@ -25,16 +25,27 @@
                                     <constraint firstAttribute="height" constant="100" id="M3k-hh-qF8"/>
                                 </constraints>
                             </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="feg-aS-acB" customClass="RangeSlider" customModule="ZMSwiftRangeSlider">
+                                <rect key="frame" x="40" y="234" width="520" height="100"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="100" id="ciw-Qr-0v3"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="3gc-ya-FaB" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="20" id="5kx-YS-eaB"/>
                             <constraint firstAttribute="trailingMargin" secondItem="3gc-ya-FaB" secondAttribute="trailing" constant="20" id="biI-4g-Dab"/>
+                            <constraint firstItem="feg-aS-acB" firstAttribute="trailing" secondItem="3gc-ya-FaB" secondAttribute="trailing" id="c0P-u8-sPg"/>
                             <constraint firstItem="3gc-ya-FaB" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="40" id="r3a-3D-pTh"/>
+                            <constraint firstItem="feg-aS-acB" firstAttribute="top" secondItem="3gc-ya-FaB" secondAttribute="bottom" constant="74" id="w5p-h2-n6g"/>
+                            <constraint firstItem="feg-aS-acB" firstAttribute="leading" secondItem="3gc-ya-FaB" secondAttribute="leading" id="yWj-ON-qNH"/>
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="rangeSlider" destination="3gc-ya-FaB" id="c97-Y2-UsR"/>
+                        <outlet property="rangeSlider1" destination="3gc-ya-FaB" id="A7p-0h-7PC"/>
+                        <outlet property="rangeSlider2" destination="feg-aS-acB" id="SDh-j1-V8G"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
