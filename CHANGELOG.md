@@ -1,3 +1,7 @@
+## 0.1.5 2016-11-27
+* Migrate to swift 3.0.
+* Add `minValueThumbTintColor`, `maxValueThumbTintColor` configurations.
+
 ## 0.1.3 2016-08-09
 * Replace delegate with callback action to enable multiple sliders in one ViewController.
 
