@@ -4,14 +4,14 @@ class TextLayer: CATextLayer {
 
     weak var rangeSlider: RangeSlider?
 
-    override func drawInContext(ctx: CGContext) {
+    override func draw(in ctx: CGContext) {
         guard let slider = rangeSlider else {
             return
         }
 
         self.fontSize = slider.displayTextFontSize
-        self.foregroundColor = slider.trackHighlightTintColor.CGColor
+        self.foregroundColor = slider.trackHighlightTintColor.cgColor
         self.alignmentMode = kCAAlignmentCenter
-        super.drawInContext(ctx)
+        super.draw(in: ctx)
     }
 }
