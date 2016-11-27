@@ -42,16 +42,16 @@ open class RangeSlider: UIControl {
         }
     }
 
-   @IBInspectable open var thumbOneTintColor: UIColor = UIColor(white: 0.9, alpha: 1.0) {
+   @IBInspectable open var minValueThumbTintColor: UIColor = UIColor(white: 0.9, alpha: 1.0) {
       didSet {
-         minValueThumbLayer.thumbTint = thumbOneTintColor.cgColor
+         minValueThumbLayer.thumbTint = minValueThumbTintColor.cgColor
          updateLayerFrames()
       }
    }
 
-   @IBInspectable open var thumbTwoTintColor: UIColor = UIColor(white: 0.9, alpha: 1.0) {
+   @IBInspectable open var maxValueThumbTintColor: UIColor = UIColor(white: 0.9, alpha: 1.0) {
       didSet {
-         maxValueThumbLayer.thumbTint = thumbTwoTintColor.cgColor
+         maxValueThumbLayer.thumbTint = maxValueThumbTintColor.cgColor
          updateLayerFrames()
       }
    }
