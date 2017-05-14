@@ -3,7 +3,7 @@ import UIKit
 @IBDesignable
 open class RangeSlider: UIControl {
     
-    public typealias BeganTrackingCallback = (_ began: Bool) -> Void
+    public typealias BeganTrackingCallback = () -> Void
     public typealias ValueChangedCallback = (_ minValue: Int, _ maxValue: Int) -> Void
     public typealias ValueFinishedChangingCallback = (_ minValue: Int, _ maxValue: Int) -> Void
     public typealias MinValueDisplayTextGetter = (_ minValue: Int) -> String?
@@ -118,7 +118,7 @@ open class RangeSlider: UIControl {
             minValueThumbLayer.isHighlight = distanceFromMinLayer < distanceFromMaxLayer
             maxValueThumbLayer.isHighlight = distanceFromMinLayer > distanceFromMaxLayer
         }
-        beganTrackingCallback?(true)
+        beganTrackingCallback?()
         return true
     }
 
