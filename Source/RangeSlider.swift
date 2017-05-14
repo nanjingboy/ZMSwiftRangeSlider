@@ -2,8 +2,10 @@ import UIKit
 
 @IBDesignable
 open class RangeSlider: UIControl {
-
+    
+    public typealias BeganTrackingCallback = (_ began: Bool) -> Void
     public typealias ValueChangedCallback = (_ minValue: Int, _ maxValue: Int) -> Void
+    public typealias ValueFinishedChangingCallback = (_ minValue: Int, _ maxValue: Int) -> Void
     public typealias MinValueDisplayTextGetter = (_ minValue: Int) -> String?
     public typealias MaxValueDisplayTextGetter = (_ maxValue: Int) -> String?
 
@@ -15,8 +17,10 @@ open class RangeSlider: UIControl {
 
     fileprivate var beginTrackLocation = CGPoint.zero
     fileprivate var rangeValues = Array(0...100)
-
+    
+    fileprivate var beganTrackingCallback: BeganTrackingCallback?
     fileprivate var valueChangedCallback: ValueChangedCallback?
+    fileprivate var valueFinishedChangingCallback: ValueFinishedChangingCallback?
     fileprivate var minValueDisplayTextGetter: MinValueDisplayTextGetter?
     fileprivate var maxValueDisplayTextGetter: MaxValueDisplayTextGetter?
 
@@ -108,9 +112,14 @@ open class RangeSlider: UIControl {
             minValueThumbLayer.isHighlight = true
         } else if maxValueThumbLayer.frame.contains(beginTrackLocation) {
             maxValueThumbLayer.isHighlight = true
+        } else {
+            let distanceFromMinLayer = abs(minValueThumbLayer.frame.midX - beginTrackLocation.x)
+            let distanceFromMaxLayer = abs(maxValueThumbLayer.frame.midX - beginTrackLocation.x)
+            minValueThumbLayer.isHighlight = distanceFromMinLayer < distanceFromMaxLayer
+            maxValueThumbLayer.isHighlight = distanceFromMinLayer > distanceFromMaxLayer
         }
-
-        return minValueThumbLayer.isHighlight || maxValueThumbLayer.isHighlight
+        beganTrackingCallback?(true)
+        return true
     }
 
     open override func continueTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {
@@ -150,6 +159,7 @@ open class RangeSlider: UIControl {
     open override func endTracking(_ touch: UITouch?, with event: UIEvent?) {
         minValueThumbLayer.isHighlight = false
         maxValueThumbLayer.isHighlight = false
+        valueFinishedChangingCallback?(minValue, maxValue)
     }
 
     @nonobjc
@@ -163,9 +173,17 @@ open class RangeSlider: UIControl {
         self.maxValue = maxValue
         updateLayerFrames()
     }
+    
+    open func setBeganTrackingCallback(_ callback: BeganTrackingCallback?) {
+        self.beganTrackingCallback = callback
+    }
 
     open func setValueChangedCallback(_ callback: ValueChangedCallback?) {
         self.valueChangedCallback = callback
+    }
+    
+    open func setValueFinishedChangingCallback(_ callback: ValueFinishedChangingCallback?) {
+        self.valueFinishedChangingCallback = callback
     }
 
     open func setMinValueDisplayTextGetter(_ getter: MinValueDisplayTextGetter?) {
