@@ -1,3 +1,6 @@
+## 0.1.7 2016-11-27
+* Enable set `minRange`, `maxRange` via `setMinAndMaxRange` method.
+
 ## 0.1.5 2016-11-27
 * Migrate to swift 3.0.
 * Add `minValueThumbTintColor`, `maxValueThumbTintColor` configurations.

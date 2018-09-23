@@ -11,7 +11,7 @@ A simple Range Slider library by Swift.
 
 ```ruby
 platform :ios, '8.0'
-pod 'ZMSwiftRangeSlider', '~> 0.1.5'
+pod 'ZMSwiftRangeSlider', '~> 0.1.7'
 ```
 
 #### [Example](Example/Example/ViewController.swift)
@@ -31,6 +31,7 @@ pod 'ZMSwiftRangeSlider', '~> 0.1.5'
 
 * `func setRangeValues(_ rangeValues: [Int])`
 * `func setMinAndMaxValue(_ minValue: Int, maxValue: Int)`
+* `func setMinAndMaxRange(_ minRange: Int, maxRange: Int)`
 * `func setValueChangedCallback(_ callback: ValueChangedCallback?)`
 * `func setMinValueDisplayTextGetter(_ getter: MinValueDisplayTextGetter?)`
 * `func setMaxValueDisplayTextGetter(_ getter: MaxValueDisplayTextGetter?)`
