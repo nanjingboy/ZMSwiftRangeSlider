@@ -20,6 +20,7 @@ class ViewController: UIViewController {
         rangeSlider1.setMaxValueDisplayTextGetter { (maxValue) -> String? in
             return "$\(maxValue)"
         }
+        rangeSlider1.setMinAndMaxRange(10, maxRange: 90)
 
         rangeSlider2.setValueChangedCallback { (minValue, maxValue) in
             print("rangeSlider2 min value:\(minValue)")

@@ -22,6 +22,8 @@ open class RangeSlider: UIControl {
 
     var minValue: Int
     var maxValue: Int
+    var minRange: Int
+    var maxRange: Int
     var thumbRadius: CGFloat
 
     open override var frame: CGRect {
@@ -42,21 +44,21 @@ open class RangeSlider: UIControl {
         }
     }
 
-   @IBInspectable open var minValueThumbTintColor: UIColor = UIColor(white: 0.9, alpha: 1.0) {
-      didSet {
-         minValueThumbLayer.thumbTint = minValueThumbTintColor.cgColor
-         updateLayerFrames()
-      }
-   }
+    @IBInspectable open var minValueThumbTintColor: UIColor = UIColor(white: 0.9, alpha: 1.0) {
+        didSet {
+            minValueThumbLayer.thumbTint = minValueThumbTintColor.cgColor
+            updateLayerFrames()
+        }
+    }
 
-   @IBInspectable open var maxValueThumbTintColor: UIColor = UIColor(white: 0.9, alpha: 1.0) {
-      didSet {
-         maxValueThumbLayer.thumbTint = maxValueThumbTintColor.cgColor
-         updateLayerFrames()
-      }
-   }
+    @IBInspectable open var maxValueThumbTintColor: UIColor = UIColor(white: 0.9, alpha: 1.0) {
+        didSet {
+            maxValueThumbLayer.thumbTint = maxValueThumbTintColor.cgColor
+            updateLayerFrames()
+        }
+    }
 
-    @IBInspectable open var trackHighlightTintColor: UIColor = UIColor(red: 2.0 / 255, green: 192.0 / 255, blue: 92.0 / 255, alpha: 1.0) {
+    @IBInspectable open var trackHighlightTintColor: UIColor = UIColor(red:0.17, green:0.74, blue:0.39, alpha:1.00) {
         didSet {
             updateLayerFrames()
         }
@@ -84,6 +86,8 @@ open class RangeSlider: UIControl {
     public override init(frame: CGRect) {
         minValue = rangeValues[0]
         maxValue = rangeValues[rangeValues.count - 1]
+        minRange = minValue
+        maxRange = maxValue
         thumbRadius = thumbSize / 2.0
         super.init(frame: frame)
         setupLayers()
@@ -92,6 +96,8 @@ open class RangeSlider: UIControl {
     public required init?(coder aDecoder: NSCoder) {
         minValue = rangeValues[0]
         maxValue = rangeValues[rangeValues.count - 1]
+        minRange = minValue
+        maxRange = maxValue
         thumbRadius = thumbSize / 2.0
         super.init(coder: aDecoder)
         setupLayers()
@@ -99,7 +105,7 @@ open class RangeSlider: UIControl {
 
     open override func layoutSublayers(of layer: CALayer) {
         super.layoutSublayers(of: layer)
-        updateLayerFrames()
+        self.updateLayerFrames()
     }
 
     open override func beginTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {
@@ -142,7 +148,7 @@ open class RangeSlider: UIControl {
                 maxValue = rangeValues[index]
             }
         }
-        updateLayerFrames()
+        setMinAndMaxValue(minValue, maxValue: maxValue)
         valueChangedCallback?(minValue, maxValue)
         return true
     }
@@ -152,15 +158,20 @@ open class RangeSlider: UIControl {
         maxValueThumbLayer.isHighlight = false
     }
 
-    @nonobjc
     open func setRangeValues(_ rangeValues: [Int]) {
         self.rangeValues = rangeValues
         setMinAndMaxValue(rangeValues[0], maxValue: rangeValues[rangeValues.count - 1])
     }
 
+    open func setMinAndMaxRange(_ minRange: Int, maxRange: Int) {
+        self.minRange = minRange
+        self.maxRange = maxRange
+        self.setMinAndMaxValue(minValue, maxValue: maxValue)
+    }
+
     open func setMinAndMaxValue(_ minValue: Int, maxValue: Int) {
-        self.minValue = minValue
-        self.maxValue = maxValue
+        self.minValue = max(minValue, minRange)
+        self.maxValue = min(maxValue, maxRange)
         updateLayerFrames()
     }
 
@@ -208,30 +219,24 @@ open class RangeSlider: UIControl {
                                   width: bounds.width,
                                   height: trackHeight)
         trackLayer.setNeedsDisplay()
-
         let offsetY = (bounds.height - thumbSize) / 2.0
         let displayLayerOffsetY = offsetY - thumbRadius - 6
-
         let minValuePosition = position(minValue) - thumbRadius
         minValueThumbLayer.frame = CGRect(x: minValuePosition,
                                           y: offsetY,
                                           width: thumbSize,
                                           height: thumbSize)
         minValueThumbLayer.setNeedsDisplay()
-
         minValueDisplayLayer.frame = CGRect(x: minValuePosition,
                                             y: displayLayerOffsetY,
                                             width: thumbSize,
                                             height: displayTextFontSize)
-
         if let minValueDisplayText = minValueDisplayTextGetter?(minValue) {
             minValueDisplayLayer.string = minValueDisplayText
         } else {
             minValueDisplayLayer.string = "\(minValue)"
         }
-
         minValueDisplayLayer.setNeedsDisplay()
-
 
         let maxValuePosition = position(maxValue) - thumbRadius
         maxValueThumbLayer.frame = CGRect(x: maxValuePosition,
@@ -239,20 +244,16 @@ open class RangeSlider: UIControl {
                                           width: thumbSize,
                                           height: thumbSize)
         maxValueThumbLayer.setNeedsDisplay()
-
         maxValueDisplayLayer.frame = CGRect(x: maxValuePosition,
                                             y: displayLayerOffsetY,
                                             width: thumbSize,
                                             height: displayTextFontSize)
-
         if let maxValueDisplayText = maxValueDisplayTextGetter?(maxValue) {
             maxValueDisplayLayer.string = maxValueDisplayText
         } else {
             maxValueDisplayLayer.string = "\(maxValue)"
         }
-
         maxValueDisplayLayer.setNeedsDisplay()
-
         CATransaction.commit()
     }
 
@@ -264,7 +265,6 @@ open class RangeSlider: UIControl {
         } else if index == count - 1 {
             return bounds.width - thumbRadius
         }
-
         return (bounds.width - thumbSize) * CGFloat(index) / CGFloat(count) + thumbRadius
     }
 }
