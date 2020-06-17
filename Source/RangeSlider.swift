@@ -19,6 +19,8 @@ open class RangeSlider: UIControl {
     fileprivate var valueChangedCallback: ValueChangedCallback?
     fileprivate var minValueDisplayTextGetter: MinValueDisplayTextGetter?
     fileprivate var maxValueDisplayTextGetter: MaxValueDisplayTextGetter?
+    
+    fileprivate var maxSliderValue: Int
 
     var minValue: Int
     var maxValue: Int
@@ -114,6 +116,7 @@ open class RangeSlider: UIControl {
         maxValue = rangeValues[rangeValues.count - 1]
         minRange = minValue
         maxRange = maxValue
+        maxSliderValue = maxValue
         thumbRadius = thumbSize / 2.0
         if #available(iOS 8.2, *) {
             labelsFont = UIFont.systemFont(ofSize: 16, weight: .semibold)
@@ -129,6 +132,7 @@ open class RangeSlider: UIControl {
         maxValue = rangeValues[rangeValues.count - 1]
         minRange = minValue
         maxRange = maxValue
+        maxSliderValue = maxValue
         thumbRadius = thumbSize / 2.0
         if #available(iOS 8.2, *) {
             labelsFont = UIFont.systemFont(ofSize: 16, weight: .semibold)
@@ -205,7 +209,14 @@ open class RangeSlider: UIControl {
         self.setMinAndMaxValue(minValue, maxValue: maxValue)
     }
 
-    open func setMinAndMaxValue(_ minValue: Int, maxValue: Int) {
+    open func setInitialMinAndMaxValue(_ minValue: Int, maxValue: Int) {
+        self.minValue = max(minValue, minRange)
+        self.maxValue = min(maxValue, maxRange)
+        self.maxSliderValue = maxValue
+        updateLayerFrames()
+    }
+
+    private func setMinAndMaxValue(_ minValue: Int, maxValue: Int) {
         self.minValue = max(minValue, minRange)
         self.maxValue = min(maxValue, maxRange)
         updateLayerFrames()
@@ -313,8 +324,8 @@ open class RangeSlider: UIControl {
                                             width: maxValueSize.width,
                                             height: displayTextFontSize)
         
-        if let maxValueDisplayText = maxValueDisplayTextGetter?(maxValue) {
-            maxValueDisplayLayer.string = "\(labelsPreprendedString)\(maxValueDisplayText)"
+        if maxValue < maxSliderValue {
+            maxValueDisplayLayer.string = "\(labelsPreprendedString)\(maxValue)"
         } else {
             maxValueDisplayLayer.string = defaultMaxValueString
         }
