@@ -260,7 +260,7 @@ open class RangeSlider: UIControl {
         var maxValueSize: CGSize!
         
         let defaultMinValueString = "\(labelsPreprendedString)\(minValue)"
-        let defaultMaxValueString = "£100+"
+        let defaultMaxValueString = "\(labelsPreprendedString)\(maxValue)\(maxValueAppendedString)"
         
         if let minValueText = minValueDisplayLayer.string {
             minValueSize = (minValueText as! NSString).size(withAttributes: [NSAttributedString.Key.font: labelsFont])
