@@ -11,7 +11,7 @@ class ThumbLayer: CALayer {
     weak var rangeSlider: RangeSlider?
 
     var thumbTint : CGColor = UIColor.gray.cgColor
-   
+
     override func draw(in ctx: CGContext) {
         guard let slider = rangeSlider else {
             return
@@ -19,7 +19,7 @@ class ThumbLayer: CALayer {
 
         let thumbFrame = bounds.insetBy(dx: slider.thumbOutlineSize / 2.0, dy: slider.thumbOutlineSize / 2.0)
         let thumbPath = UIBezierPath(roundedRect: thumbFrame, cornerRadius: thumbFrame.height * 0.5)
-        ctx.setFillColor(UIColor.white.cgColor)
+        ctx.setFillColor(thumbTint)
         ctx.addPath(thumbPath.cgPath)
         ctx.fillPath()
 
