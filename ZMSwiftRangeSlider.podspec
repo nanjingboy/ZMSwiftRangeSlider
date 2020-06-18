@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'ZMSwiftRangeSlider'
-  s.version          = '0.1.7'
+  s.version          = '0.1.9'
   s.summary          = 'A simple Range Slider library by Swift.'
   s.homepage         = 'https://github.com/nanjingboy/ZMSwiftRangeSlider'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }

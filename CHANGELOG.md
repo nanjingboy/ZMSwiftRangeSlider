@@ -1,3 +1,6 @@
+## 0.1.9 2020-06-18
+* Add `labelsAreBelow` configuration to allow text display below the slider.
+
 ## 0.1.7 2016-11-27
 * Enable set `minRange`, `maxRange` via `setMinAndMaxRange` method.
 
