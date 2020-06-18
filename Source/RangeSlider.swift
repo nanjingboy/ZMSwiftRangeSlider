@@ -25,7 +25,8 @@ open class RangeSlider: UIControl {
     var minRange: Int
     var maxRange: Int
     var thumbRadius: CGFloat
-
+    var displayTextFont: UIFont
+    
     open override var frame: CGRect {
         didSet {
             updateLayerFrames()
@@ -79,6 +80,17 @@ open class RangeSlider: UIControl {
 
     @IBInspectable open var displayTextFontSize: CGFloat = 14.0 {
         didSet {
+            if #available(iOS 8.2, *) {
+                displayTextFont = UIFont.systemFont(ofSize: displayTextFontSize, weight: .semibold)
+            } else {
+                displayTextFont = UIFont.systemFont(ofSize: displayTextFontSize)
+            }
+            updateLayerFrames()
+        }
+    }
+
+    @IBInspectable open var labelsAreBelow: Bool = false {
+        didSet {
             updateLayerFrames()
         }
     }
@@ -89,6 +101,11 @@ open class RangeSlider: UIControl {
         minRange = minValue
         maxRange = maxValue
         thumbRadius = thumbSize / 2.0
+        if #available(iOS 8.2, *) {
+            displayTextFont = UIFont.systemFont(ofSize: displayTextFontSize, weight: .semibold)
+        } else {
+            displayTextFont = UIFont.systemFont(ofSize: displayTextFontSize)
+        }
         super.init(frame: frame)
         setupLayers()
     }
@@ -99,6 +116,11 @@ open class RangeSlider: UIControl {
         minRange = minValue
         maxRange = maxValue
         thumbRadius = thumbSize / 2.0
+        if #available(iOS 8.2, *) {
+            displayTextFont = UIFont.systemFont(ofSize: displayTextFontSize, weight: .semibold)
+        } else {
+            displayTextFont = UIFont.systemFont(ofSize: displayTextFontSize)
+        }
         super.init(coder: aDecoder)
         setupLayers()
     }
@@ -220,38 +242,53 @@ open class RangeSlider: UIControl {
                                   height: trackHeight)
         trackLayer.setNeedsDisplay()
         let offsetY = (bounds.height - thumbSize) / 2.0
-        let displayLayerOffsetY = offsetY - thumbRadius - 6
-        let minValuePosition = position(minValue) - thumbRadius
-        minValueThumbLayer.frame = CGRect(x: minValuePosition,
-                                          y: offsetY,
-                                          width: thumbSize,
-                                          height: thumbSize)
-        minValueThumbLayer.setNeedsDisplay()
-        minValueDisplayLayer.frame = CGRect(x: minValuePosition,
-                                            y: displayLayerOffsetY,
-                                            width: thumbSize,
-                                            height: displayTextFontSize)
         if let minValueDisplayText = minValueDisplayTextGetter?(minValue) {
             minValueDisplayLayer.string = minValueDisplayText
         } else {
             minValueDisplayLayer.string = "\(minValue)"
         }
+        let minValuePosition = position(minValue) - thumbRadius
+        let minValueSize = (minValueDisplayLayer.string as! NSString).size(withAttributes: [NSAttributedString.Key.font: displayTextFont])
+        minValueThumbLayer.frame = CGRect(x: minValuePosition,
+                                          y: offsetY,
+                                          width: thumbSize,
+                                          height: thumbSize)
+        minValueThumbLayer.setNeedsDisplay()
+        if labelsAreBelow {
+            minValueDisplayLayer.frame = CGRect(x: minValuePosition,
+                                                y: offsetY + max(thumbSize, minValueSize.height),
+                                                width: max(thumbSize, minValueSize.width),
+                                                height: displayTextFontSize)
+        } else {
+            minValueDisplayLayer.frame = CGRect(x: minValuePosition,
+                                                y: offsetY - minValueSize.height,
+                                                width: max(thumbSize, minValueSize.width),
+                                                height: displayTextFontSize)
+        }
         minValueDisplayLayer.setNeedsDisplay()
 
+        if let maxValueDisplayText = maxValueDisplayTextGetter?(maxValue) {
+            maxValueDisplayLayer.string = maxValueDisplayText
+        } else {
+            maxValueDisplayLayer.string = "\(maxValue)"
+        }
         let maxValuePosition = position(maxValue) - thumbRadius
+        let maxValueSize = (maxValueDisplayLayer.string as! NSString).size(withAttributes: [NSAttributedString.Key.font: displayTextFont])
         maxValueThumbLayer.frame = CGRect(x: maxValuePosition,
                                           y: offsetY,
                                           width: thumbSize,
                                           height: thumbSize)
         maxValueThumbLayer.setNeedsDisplay()
-        maxValueDisplayLayer.frame = CGRect(x: maxValuePosition,
-                                            y: displayLayerOffsetY,
-                                            width: thumbSize,
-                                            height: displayTextFontSize)
-        if let maxValueDisplayText = maxValueDisplayTextGetter?(maxValue) {
-            maxValueDisplayLayer.string = maxValueDisplayText
+        if labelsAreBelow {
+            maxValueDisplayLayer.frame = CGRect(x: maxValuePosition,
+                                                y: offsetY + max(thumbSize, maxValueSize.height),
+                                                width: max(thumbSize, maxValueSize.width),
+                                                height: displayTextFontSize)
         } else {
-            maxValueDisplayLayer.string = "\(maxValue)"
+            maxValueDisplayLayer.frame = CGRect(x: maxValuePosition,
+                                                y: offsetY - maxValueSize.height,
+                                                width: max(thumbSize, maxValueSize.width),
+                                                height: displayTextFontSize)
         }
         maxValueDisplayLayer.setNeedsDisplay()
         CATransaction.commit()

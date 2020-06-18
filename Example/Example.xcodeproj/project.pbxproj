@@ -160,7 +160,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-Example/Pods-Example-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-Example/Pods-Example-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/ZMSwiftRangeSlider/ZMSwiftRangeSlider.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
@@ -169,7 +169,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Example/Pods-Example-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Example/Pods-Example-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		F01268EA80CDC2F6E751795F /* [CP] Check Pods Manifest.lock */ = {
