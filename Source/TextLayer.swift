@@ -10,11 +10,6 @@ class TextLayer: CATextLayer {
         }
 
         self.fontSize = slider.displayTextFontSize
-        if #available(iOS 8.2, *) {
-            self.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
-        } else {
-            // Fallback on earlier versions
-        }
         self.foregroundColor = slider.trackHighlightTintColor.cgColor
         self.alignmentMode = CATextLayerAlignmentMode.center
         super.draw(in: ctx)
