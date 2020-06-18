@@ -19,8 +19,6 @@ open class RangeSlider: UIControl {
     fileprivate var valueChangedCallback: ValueChangedCallback?
     fileprivate var minValueDisplayTextGetter: MinValueDisplayTextGetter?
     fileprivate var maxValueDisplayTextGetter: MaxValueDisplayTextGetter?
-    
-    fileprivate var maxSliderValue: Int
 
     var minValue: Int
     var maxValue: Int
@@ -85,44 +83,12 @@ open class RangeSlider: UIControl {
         }
     }
 
-    @IBInspectable open var labelsAreBelow: Bool = true {
-        didSet {
-            updateLayerFrames()
-        }
-    }
-
-    @IBInspectable open var labelsFont: UIFont {
-        didSet {
-            minValueDisplayLayer.font = labelsFont
-            maxValueDisplayLayer.font = labelsFont
-            updateLayerFrames()
-        }
-    }
-
-    @IBInspectable open var labelsPreprendedString: String = "" {
-        didSet {
-            updateLayerFrames()
-        }
-    }
-
-    @IBInspectable open var maxValueAppendedString: String = "" {
-        didSet {
-            updateLayerFrames()
-        }
-    }
-
     public override init(frame: CGRect) {
         minValue = rangeValues[0]
         maxValue = rangeValues[rangeValues.count - 1]
         minRange = minValue
         maxRange = maxValue
-        maxSliderValue = maxValue
         thumbRadius = thumbSize / 2.0
-        if #available(iOS 8.2, *) {
-            labelsFont = UIFont.systemFont(ofSize: 16, weight: .semibold)
-        } else {
-            labelsFont = UIFont.systemFont(ofSize: 16)
-        }
         super.init(frame: frame)
         setupLayers()
     }
@@ -132,13 +98,7 @@ open class RangeSlider: UIControl {
         maxValue = rangeValues[rangeValues.count - 1]
         minRange = minValue
         maxRange = maxValue
-        maxSliderValue = maxValue
         thumbRadius = thumbSize / 2.0
-        if #available(iOS 8.2, *) {
-            labelsFont = UIFont.systemFont(ofSize: 16, weight: .semibold)
-        } else {
-            labelsFont = UIFont.systemFont(ofSize: 16)
-        }
         super.init(coder: aDecoder)
         setupLayers()
     }
@@ -209,14 +169,7 @@ open class RangeSlider: UIControl {
         self.setMinAndMaxValue(minValue, maxValue: maxValue)
     }
 
-    open func setInitialMinAndMaxValue(_ minValue: Int, maxValue: Int) {
-        self.minValue = max(minValue, minRange)
-        self.maxValue = min(maxValue, maxRange)
-        self.maxSliderValue = maxValue
-        updateLayerFrames()
-    }
-
-    private func setMinAndMaxValue(_ minValue: Int, maxValue: Int) {
+    open func setMinAndMaxValue(_ minValue: Int, maxValue: Int) {
         self.minValue = max(minValue, minRange)
         self.maxValue = min(maxValue, maxRange)
         updateLayerFrames()
@@ -267,69 +220,39 @@ open class RangeSlider: UIControl {
                                   height: trackHeight)
         trackLayer.setNeedsDisplay()
         let offsetY = (bounds.height - thumbSize) / 2.0
-        var minValueSize: CGSize!
-        var maxValueSize: CGSize!
-        
-        let defaultMinValueString = "\(labelsPreprendedString)\(minValue)"
-        let defaultMaxValueString = "\(labelsPreprendedString)\(maxValue)\(maxValueAppendedString)"
-        
-        if let minValueText = minValueDisplayLayer.string {
-            minValueSize = (minValueText as! NSString).size(withAttributes: [NSAttributedString.Key.font: labelsFont])
-        } else {
-            minValueSize = (defaultMinValueString as NSString).size(withAttributes: [NSAttributedString.Key.font: labelsFont])
-        }
-        
-        
-        if let maxValueText = maxValueDisplayLayer.string {
-            maxValueSize = (maxValueText as! NSString).size(withAttributes: [NSAttributedString.Key.font: labelsFont])
-        } else {
-            maxValueSize = (defaultMaxValueString as NSString).size(withAttributes: [NSAttributedString.Key.font: labelsFont])
-        }
-        
-        var displayLayerOffsetY: CGFloat!
-        
-        if(labelsAreBelow) {
-            displayLayerOffsetY = thumbSize + 25
-        } else {
-            displayLayerOffsetY = offsetY - thumbRadius - 8
-        }
-        
-        let minValuePosition = position(minValue)
-        minValueThumbLayer.frame = CGRect(x: minValuePosition - thumbRadius,
+        let displayLayerOffsetY = offsetY - thumbRadius - 6
+        let minValuePosition = position(minValue) - thumbRadius
+        minValueThumbLayer.frame = CGRect(x: minValuePosition,
                                           y: offsetY,
                                           width: thumbSize,
                                           height: thumbSize)
         minValueThumbLayer.setNeedsDisplay()
-        minValueDisplayLayer.frame = CGRect(x: minValuePosition - (minValueSize.width / 2),
+        minValueDisplayLayer.frame = CGRect(x: minValuePosition,
                                             y: displayLayerOffsetY,
-                                            width: minValueSize.width,
+                                            width: thumbSize,
                                             height: displayTextFontSize)
-        
         if let minValueDisplayText = minValueDisplayTextGetter?(minValue) {
-            minValueDisplayLayer.string = "\(labelsPreprendedString)\(minValueDisplayText)"
+            minValueDisplayLayer.string = minValueDisplayText
         } else {
-            minValueDisplayLayer.string = defaultMinValueString
+            minValueDisplayLayer.string = "\(minValue)"
         }
-        
         minValueDisplayLayer.setNeedsDisplay()
 
-        let maxValuePosition = position(maxValue)
-        maxValueThumbLayer.frame = CGRect(x: maxValuePosition - thumbRadius,
+        let maxValuePosition = position(maxValue) - thumbRadius
+        maxValueThumbLayer.frame = CGRect(x: maxValuePosition,
                                           y: offsetY,
                                           width: thumbSize,
                                           height: thumbSize)
         maxValueThumbLayer.setNeedsDisplay()
-        maxValueDisplayLayer.frame = CGRect(x: maxValuePosition - (maxValueSize.width / 2),
+        maxValueDisplayLayer.frame = CGRect(x: maxValuePosition,
                                             y: displayLayerOffsetY,
-                                            width: maxValueSize.width,
+                                            width: thumbSize,
                                             height: displayTextFontSize)
-        
-        if maxValue < maxSliderValue {
-            maxValueDisplayLayer.string = "\(labelsPreprendedString)\(maxValue)"
+        if let maxValueDisplayText = maxValueDisplayTextGetter?(maxValue) {
+            maxValueDisplayLayer.string = maxValueDisplayText
         } else {
-            maxValueDisplayLayer.string = defaultMaxValueString
+            maxValueDisplayLayer.string = "\(maxValue)"
         }
-        
         maxValueDisplayLayer.setNeedsDisplay()
         CATransaction.commit()
     }
